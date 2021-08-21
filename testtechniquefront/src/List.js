@@ -5,8 +5,10 @@ import {
 } from "@apollo/client";
 import { AddElement } from './Apollo/mutation'
 import { GET_LIST } from './Apollo/queries'
+import React, {  useState } from 'react';
 
 function List({ data }) {
+  const [titre, setTitre] = useState("");
 
   const [addElement] = useMutation(AddElement, {
     update(cache, { data: { addElement } }) {
@@ -32,8 +34,11 @@ function List({ data }) {
       }
     },
   });
+  const onChange=(e)=>setTitre(e.target.value)
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+ 
     let input = {
       idList: data._id,
       element: { titre: event.target.elements.element.value }
@@ -43,12 +48,13 @@ function List({ data }) {
         input
       }
     })
-  }
+    setTitre("")
+    }
 
   return (
     <form onSubmit={handleSubmit} style={{ width: 50, margin: 5, height: 200, overflowY: "scroll" }}>
 
-      <h3 > {data.titre}  </h3>
+      <h3  htmlFor="feFirstName"> {data.titre}  </h3>
       {data.elements.map(elementData =>
         <Element key={elementData._id} data={elementData} idList={data._id} />
 
@@ -56,7 +62,7 @@ function List({ data }) {
       )}
 
 
-      <input name="element" required />
+      <input  onChange={onChange}  value={titre}  htmlFor="element" name="element" required  />
     </form>
 
 

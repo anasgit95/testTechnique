@@ -1,5 +1,5 @@
 
-import React,{useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import List from './List'
 import { GET_LIST } from './Apollo/queries'
 import { AddList } from './Apollo/mutation'
@@ -7,20 +7,21 @@ import { AddList } from './Apollo/mutation'
 import {
     useMutation,
     useQuery,
-  } from "@apollo/client";
+} from "@apollo/client";
 
 function MainApp() {
     const { loading, error, data: listArray } = useQuery(GET_LIST);
-    const [listState, setListeState] = useState({getList:[]});
- 
-     
-    useEffect(() => {
-          
-     if(!loading && listArray && listArray)
-         setListeState(listArray)
-      },[listArray]);
+    const [listState, setListeState] = useState({ getList: [] });
+    const [titre, setTitre] = useState("");
 
-         const [addList] = useMutation(AddList, {
+
+    useEffect(() => {
+
+        if (!loading && listArray && listArray)
+            setListeState(listArray)
+    }, [listArray]);
+
+    const [addList] = useMutation(AddList, {
         update(cache, { data: { addList } }) {
             try {
                 const oldData = JSON.parse(JSON.stringify(cache.readQuery({
@@ -43,36 +44,36 @@ function MainApp() {
     });
 
     const handleSubmit = async (event) => {
-        const  titre =  event.target.elements.search.value
-        event.preventDefault();
-if(titre==="")          setListeState(listArray)
-else 
-{  let Search =  listArray.getList.filter(list=>list.titre===titre)
-           if(Search.length>0 )
-        {
-       setListeState({getList:Search})
-         }
-        else
-        await addList({
-             variables: {
-                 input: {
-                     titre 
-                }
+         event.preventDefault();
+        if (titre === "") setListeState(listArray)
+        else {
+            let Search = listArray.getList.filter(list => list.titre === titre)
+            if (Search.length > 0) {
+                setListeState({ getList: Search })
             }
-        })}
+            else
+                await addList({
+                    variables: {
+                        input: {
+                            titre
+                        }
+                    }
+                })
 
+        }
 
+   setTitre("")
 
     }
+     const onChange=(e)=>setTitre(e.target.value)
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
     const { getList } = listState
-    console.log(listState)
-     return (
+    return (
         <div className="centerDiv">
             <h3> Test Technique</h3>
             <form onSubmit={handleSubmit} className="rowSection">
-                <input name="search"   />
+                <input htmlFor="search"  value={titre} name="search" onChange={onChange} />
                 <button type="submit" className="customeButton">
                     Submit
                 </button>
