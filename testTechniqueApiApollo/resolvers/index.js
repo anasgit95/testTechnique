@@ -5,17 +5,9 @@ const resolvers = {
   Query: {
     getList: async (args) => {
       try {
-       await axios.get('https://api.covidtracking.com/v1/us/current.json')
-        .then(response => {
-          console.log(response)
-         
-        })
-        .catch(error => {
-          console.log("erro",error);
-        });
-        return [{
-          Titre:"anas"
-        }]
+      const res  = await axios.get('http://localhost:3005/list')
+         return(res.data)
+       
        } catch (error) {
         logger.error(error);
         return error.message;
@@ -27,14 +19,34 @@ const resolvers = {
   Mutation: {
     addList: async (root, args, { user }) => {
       try {
-        const { logo } = args.input
- 
-           return response;
+         const res  = await axios.post('http://localhost:3005/list',args.input)
 
-       } catch (error) {
-        console.log("error***", error)
-        return error.message;
-      }
+           return(res.data)
+         
+         } catch (error) {
+          logger.error(error);
+          return error.message;
+        }
+    },
+    addElement: async (root, args, { user }) => {
+      try {
+          const res  = await axios.put('http://localhost:3005/list/'+args.input.idList,args.input)
+           return(res.data)
+         
+         } catch (error) {
+          logger.error(error);
+          return error.message;
+        }
+    },
+    deleteElement: async (root, args, { user }) => {
+      try {
+          const res  = await axios.delete('http://localhost:3005/list/'+args.input.idList+"/"+args.input._id)
+            return(res.data)
+         
+         } catch (error) {
+          logger.error(error);
+          return error.message;
+        }
     },
 
     

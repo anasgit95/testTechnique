@@ -4,24 +4,36 @@ const typeDefs = gql`
  
 type list {
   _id: ID
-  Titre: String
+  titre: String
   elements:[element]
 }
  
 type element {
   _id: ID
-  Titre: String
+  titre: String
 
 }
  
 
 input inputList{ 
   titre:String
+  
+} 
+input elementInput{ 
+  titre:String
+  
+} 
+ 
+input inputElement{ 
+  element:elementInput
   idList:String
  
 } 
-
+input inputElementDelete{ 
+  _id:String
+  idList:String
  
+} 
 
 type Query {
   getList: [list]
@@ -29,7 +41,10 @@ type Query {
  
 }
   type Mutation {
-   addList(input: inputList): list
+   addList(input: inputList!): list
+   addElement(input: inputElement!): list
+   deleteElement(input: inputElementDelete!): list
+
   
   }
 `;

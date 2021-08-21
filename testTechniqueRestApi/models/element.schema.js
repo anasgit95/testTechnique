@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const element = mongoose.Schema({
-  title: String,
+  titre: String,
    
 });
 

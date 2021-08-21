@@ -7,7 +7,7 @@ var router = express.Router();
 
 router.post("/", listController.createList);
 
-router.delete("/:_id", listController.deleteElement);
+router.delete("/:_id/:_idElement", listController.deleteElement);
 router.put("/:_id", listController.updateElement);
 
 router.get("/", listController.getAllList);

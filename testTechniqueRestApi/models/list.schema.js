@@ -3,7 +3,7 @@ var mongoose_delete = require("mongoose-delete");
 var  element =  require ( './element.schema')
 const listSchema = new mongoose.Schema(
   { 
-    title: { type: String, unique: true },
+    titre: { type: String, unique: true },
 
 
      elements :[element]
